@@ -1,101 +1,373 @@
-# Org
+# Issue: `nx + Module Federation Runtime + TanStack/Router`
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Steps to Reproduce
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+1. Start the `remote_a` and `remote_b` applications:
+   ```bash
+   yarn nx run remote_a:serve --port 4200
+   yarn nx run remote_b:serve --port 4201
+   ```
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+2. Start the `host` application:
+   ```bash
+   yarn nx run host:serve --port 3000
+   ```
 
-## Run tasks
+3. Open the host application in a browser:
+   [http://localhost:3000](http://localhost:3000)
 
-To run the dev server for your app, use:
+4. Attempt to navigate to the following routes:
+   - [http://localhost:3000/remote-a](http://localhost:3000/remote-a)
+   - [http://localhost:3000/remote-b](http://localhost:3000/remote-b)
 
-```sh
-npx nx serve org
+### Expected Behavior
+
+The routes should load and display content from `remote_a` and `remote_b`.
+
+### Actual Behavior
+
+An error appears when navigating to the specified routes. 
+
 ```
+ERROR
+Script error.
+    at handleError (http://localhost:3000/styles.js:1772:58)
+    at http://localhost:3000/styles.js:1791:7
+    at Object.invokeGuardedCallbackDev (http://localhost:3000/vendor.js:16260:16)
+    at invokeGuardedCallback (http://localhost:3000/vendor.js:16324:31)
+    at beginWork$1 (http://localhost:3000/vendor.js:39532:7)
+    at performUnitOfWork (http://localhost:3000/vendor.js:38638:12)
+    at workLoopConcurrent (http://localhost:3000/vendor.js:38624:5)
+    at renderRootConcurrent (http://localhost:3000/vendor.js:38586:7)
+    at performConcurrentWorkOnRoot (http://localhost:3000/vendor.js:37819:38)
+    at workLoop (http://localhost:3000/vendor.js:47762:34)
 
-To create a production bundle:
+vendor.js:27533 Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem. Error Component Stack
+    at Matches (Matches.tsx:204:18)
+    at RouterContextProvider (RouterProvider.tsx:61:3)
+    at RouterProvider (RouterProvider.tsx:93:5)
+    at div (<anonymous>)
+    at App (<anonymous>)
+    at div (<anonymous>)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at Suspense (<anonymous>)
+    at OutletImpl (vendor.js:4380:41)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at CatchBoundaryImpl (vendor.js:4063:5)
+    at CatchBoundary (vendor.js:4043:32)
+    at MatchesInner (vendor.js:4609:52)
+    at Suspense (<anonymous>)
+    at Matches (vendor.js:4599:41)
+    at RouterContextProvider (vendor.js:4701:3)
+    at RouterProvider (vendor.js:4720:27)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at App (<anonymous>)
+overrideMethod @ hook.js:608
+printWarning @ react.development.js:209
+error @ react.development.js:183
+resolveDispatcher @ react.development.js:1592
+useContext @ react.development.js:1602
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+beginWork$1 @ vendor.js:39507
+performUnitOfWork @ vendor.js:38638
+workLoopConcurrent @ vendor.js:38624
+renderRootConcurrent @ vendor.js:38586
+performConcurrentWorkOnRoot @ vendor.js:37819
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 7 more frames
+Show lessUnderstand this errorAI
+vendor.js:27533 Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem. Error Component Stack
+    at Matches (Matches.tsx:204:18)
+    at RouterContextProvider (RouterProvider.tsx:61:3)
+    at RouterProvider (RouterProvider.tsx:93:5)
+    at div (<anonymous>)
+    at App (<anonymous>)
+    at div (<anonymous>)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at Suspense (<anonymous>)
+    at OutletImpl (vendor.js:4380:41)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at CatchBoundaryImpl (vendor.js:4063:5)
+    at CatchBoundary (vendor.js:4043:32)
+    at MatchesInner (vendor.js:4609:52)
+    at Suspense (<anonymous>)
+    at Matches (vendor.js:4599:41)
+    at RouterContextProvider (vendor.js:4701:3)
+    at RouterProvider (vendor.js:4720:27)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at App (<anonymous>)
+overrideMethod @ hook.js:608
+printWarning @ react.development.js:209
+error @ react.development.js:183
+resolveDispatcher @ react.development.js:1592
+useContext @ react.development.js:1602
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+callCallback @ vendor.js:16211
+invokeGuardedCallbackDev @ vendor.js:16260
+invokeGuardedCallback @ vendor.js:16324
+beginWork$1 @ vendor.js:39532
+performUnitOfWork @ vendor.js:38638
+workLoopConcurrent @ vendor.js:38624
+renderRootConcurrent @ vendor.js:38586
+performConcurrentWorkOnRoot @ vendor.js:37819
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 7 more frames
+Show lessUnderstand this errorAI
+react.development.js:1618 Uncaught TypeError: Cannot read properties of null (reading 'useContext')
+    at Object.useContext (react.development.js:1618:1)
+    at useRouter (useRouter.tsx:9:17)
+    at Matches (Matches.tsx:204:18)
+    at renderWithHooks (vendor.js:27533:18)
+    at mountIndeterminateComponent (vendor.js:32145:13)
+    at beginWork (vendor.js:33668:16)
+    at HTMLUnknownElement.callCallback (vendor.js:16211:14)
+    at Object.invokeGuardedCallbackDev (vendor.js:16260:16)
+    at invokeGuardedCallback (vendor.js:16324:31)
+    at beginWork$1 (vendor.js:39532:7)
+useContext @ react.development.js:1618
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+callCallback @ vendor.js:16211
+invokeGuardedCallbackDev @ vendor.js:16260
+invokeGuardedCallback @ vendor.js:16324
+beginWork$1 @ vendor.js:39532
+performUnitOfWork @ vendor.js:38638
+workLoopConcurrent @ vendor.js:38624
+renderRootConcurrent @ vendor.js:38586
+performConcurrentWorkOnRoot @ vendor.js:37819
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 3 more frames
+Show lessUnderstand this errorAI
+vendor.js:27533 Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem. Error Component Stack
+    at Matches (Matches.tsx:204:18)
+    at RouterContextProvider (RouterProvider.tsx:61:3)
+    at RouterProvider (RouterProvider.tsx:93:5)
+    at div (<anonymous>)
+    at App (<anonymous>)
+    at div (<anonymous>)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at Suspense (<anonymous>)
+    at OutletImpl (vendor.js:4380:41)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at CatchBoundaryImpl (vendor.js:4063:5)
+    at CatchBoundary (vendor.js:4043:32)
+    at MatchesInner (vendor.js:4609:52)
+    at Suspense (<anonymous>)
+    at Matches (vendor.js:4599:41)
+    at RouterContextProvider (vendor.js:4701:3)
+    at RouterProvider (vendor.js:4720:27)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at App (<anonymous>)
+overrideMethod @ hook.js:608
+printWarning @ react.development.js:209
+error @ react.development.js:183
+resolveDispatcher @ react.development.js:1592
+useContext @ react.development.js:1602
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+beginWork$1 @ vendor.js:39507
+performUnitOfWork @ vendor.js:38638
+workLoopSync @ vendor.js:38547
+renderRootSync @ vendor.js:38515
+recoverFromConcurrentError @ vendor.js:37931
+performConcurrentWorkOnRoot @ vendor.js:37831
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 7 more frames
+Show lessUnderstand this errorAI
+vendor.js:27533 Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem. Error Component Stack
+    at Matches (Matches.tsx:204:18)
+    at RouterContextProvider (RouterProvider.tsx:61:3)
+    at RouterProvider (RouterProvider.tsx:93:5)
+    at div (<anonymous>)
+    at App (<anonymous>)
+    at div (<anonymous>)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at Suspense (<anonymous>)
+    at OutletImpl (vendor.js:4380:41)
+    at component (<anonymous>)
+    at MatchInnerImpl (vendor.js:4296:3)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at SafeFragment (vendor.js:4740:156)
+    at MatchImpl (vendor.js:4239:3)
+    at CatchBoundaryImpl (vendor.js:4063:5)
+    at CatchBoundary (vendor.js:4043:32)
+    at MatchesInner (vendor.js:4609:52)
+    at Suspense (<anonymous>)
+    at Matches (vendor.js:4599:41)
+    at RouterContextProvider (vendor.js:4701:3)
+    at RouterProvider (vendor.js:4720:27)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at div (<anonymous>)
+    at App (<anonymous>)
+overrideMethod @ hook.js:608
+printWarning @ react.development.js:209
+error @ react.development.js:183
+resolveDispatcher @ react.development.js:1592
+useContext @ react.development.js:1602
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+callCallback @ vendor.js:16211
+invokeGuardedCallbackDev @ vendor.js:16260
+invokeGuardedCallback @ vendor.js:16324
+beginWork$1 @ vendor.js:39532
+performUnitOfWork @ vendor.js:38638
+workLoopSync @ vendor.js:38547
+renderRootSync @ vendor.js:38515
+recoverFromConcurrentError @ vendor.js:37931
+performConcurrentWorkOnRoot @ vendor.js:37831
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 7 more frames
+Show lessUnderstand this errorAI
+react.development.js:1618 Uncaught TypeError: Cannot read properties of null (reading 'useContext')
+    at Object.useContext (react.development.js:1618:1)
+    at useRouter (useRouter.tsx:9:17)
+    at Matches (Matches.tsx:204:18)
+    at renderWithHooks (vendor.js:27533:18)
+    at mountIndeterminateComponent (vendor.js:32145:13)
+    at beginWork (vendor.js:33668:16)
+    at HTMLUnknownElement.callCallback (vendor.js:16211:14)
+    at Object.invokeGuardedCallbackDev (vendor.js:16260:16)
+    at invokeGuardedCallback (vendor.js:16324:31)
+    at beginWork$1 (vendor.js:39532:7)
+useContext @ react.development.js:1618
+useRouter @ useRouter.tsx:9
+Matches @ Matches.tsx:204
+renderWithHooks @ vendor.js:27533
+mountIndeterminateComponent @ vendor.js:32145
+beginWork @ vendor.js:33668
+callCallback @ vendor.js:16211
+invokeGuardedCallbackDev @ vendor.js:16260
+invokeGuardedCallback @ vendor.js:16324
+beginWork$1 @ vendor.js:39532
+performUnitOfWork @ vendor.js:38638
+workLoopSync @ vendor.js:38547
+renderRootSync @ vendor.js:38515
+recoverFromConcurrentError @ vendor.js:37931
+performConcurrentWorkOnRoot @ vendor.js:37831
+workLoop @ vendor.js:47762
+flushWork @ vendor.js:47735
+performWorkUntilDeadline @ vendor.js:48029
+Show 3 more frames
+Show lessUnderstand this errorAI
+vendor.js:30751 The above error occurred in the <Matches> component:
 
-```sh
-npx nx build org
+    at Matches (http://localhost:4201/vendors-node_modules_tanstack_react-router_dist_esm_index_js.js:4213:18)
+    at RouterContextProvider (http://localhost:4201/vendors-node_modules_tanstack_react-router_dist_esm_index_js.js:4312:3)
+    at RouterProvider (http://localhost:4201/vendors-node_modules_tanstack_react-router_dist_esm_index_js.js:4331:27)
+    at div
+    at App
+    at div
+    at component
+    at MatchInnerImpl (http://localhost:3000/vendor.js:4296:3)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at MatchImpl (http://localhost:3000/vendor.js:4239:3)
+    at Suspense
+    at OutletImpl (http://localhost:3000/vendor.js:4380:41)
+    at component
+    at MatchInnerImpl (http://localhost:3000/vendor.js:4296:3)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at SafeFragment (http://localhost:3000/vendor.js:4740:156)
+    at MatchImpl (http://localhost:3000/vendor.js:4239:3)
+    at CatchBoundaryImpl (http://localhost:3000/vendor.js:4063:5)
+    at CatchBoundary (http://localhost:3000/vendor.js:4043:32)
+    at MatchesInner (http://localhost:3000/vendor.js:4609:52)
+    at Suspense
+    at Matches (http://localhost:3000/vendor.js:4599:41)
+    at RouterContextProvider (http://localhost:3000/vendor.js:4701:3)
+    at RouterProvider (http://localhost:3000/vendor.js:4720:27)
+    at div
+    at div
+    at div
+    at App
+
+React will try to recreate this component tree from scratch using the error boundary you provided, CatchBoundaryImpl.
 ```
-
-To see all available targets to run for a project, run:
-
-```sh
-npx nx show project org
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/react:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
