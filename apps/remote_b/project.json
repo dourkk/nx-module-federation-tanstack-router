@@ -1,0 +1,82 @@
+{
+  "name": "remote_b",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/remote_b/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/remote_b",
+        "index": "apps/remote_b/src/index.html",
+        "baseHref": "/",
+        "main": "apps/remote_b/src/main.ts",
+        "tsConfig": "apps/remote_b/tsconfig.app.json",
+        "assets": ["apps/remote_b/src/favicon.ico", "apps/remote_b/src/assets"],
+        "styles": ["apps/remote_b/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "apps/remote_b/webpack.config.ts"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/remote_b/src/environments/environment.ts",
+              "with": "apps/remote_b/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false,
+          "webpackConfig": "apps/remote_b/webpack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/react:module-federation-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "remote_b:build",
+        "hmr": true,
+        "port": 4201
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "remote_b:build:development"
+        },
+        "production": {
+          "buildTarget": "remote_b:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/react:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "remote_b:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "remote_b:serve:development"
+        },
+        "production": {
+          "serveTarget": "remote_b:serve:production"
+        }
+      }
+    }
+  }
+}

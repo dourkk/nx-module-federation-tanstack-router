@@ -5,6 +5,8 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@module-federation/enhanced": "^0.7.1",
+    "@tanstack/react-router": "^1.79.0",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
@@ -26,6 +28,8 @@
     "@swc/cli": "~0.3.12",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@tanstack/router-devtools": "^1.79.0",
+    "@tanstack/router-plugin": "^1.79.0",
     "@testing-library/react": "15.0.6",
     "@types/jest": "^29.5.12",
     "@types/node": "18.16.9",

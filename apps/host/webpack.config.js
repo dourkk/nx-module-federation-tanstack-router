@@ -4,7 +4,7 @@ const { join } = require('path');
 
 module.exports = {
   output: {
-    path: join(__dirname, '../../dist/apps/org'),
+    path: join(__dirname, '../../dist/apps/host'),
   },
   devServer: {
     port: 4200,
@@ -25,6 +25,7 @@ module.exports = {
       styles: ['./src/styles.css'],
       outputHashing: process.env['NODE_ENV'] === 'production' ? 'all' : 'none',
       optimization: process.env['NODE_ENV'] === 'production',
+      sourceMap: false
     }),
     new NxReactWebpackPlugin({
       // Uncomment this line if you don't want to use SVGR

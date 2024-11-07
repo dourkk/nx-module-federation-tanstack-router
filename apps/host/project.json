@@ -1,7 +1,7 @@
 {
-  "name": "org",
+  "name": "host",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/org/src",
+  "sourceRoot": "apps/host/src",
   "projectType": "application",
   "tags": [],
   "// targets": "to see all targets run: nx show project org --web",
