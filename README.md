@@ -3,12 +3,14 @@
 ## Steps to Reproduce
 
 1. Start the `remote_a` and `remote_b` applications:
+
    ```bash
    yarn nx run remote_a:serve --port 4200
    yarn nx run remote_b:serve --port 4201
    ```
 
 2. Start the `host` application:
+
    ```bash
    yarn nx run host:serve --port 3000
    ```
@@ -26,7 +28,7 @@ The routes should load and display content from `remote_a` and `remote_b`.
 
 ### Actual Behavior
 
-An error appears when navigating to the specified routes. 
+An error appears when navigating to the specified routes.
 
 ```
 ERROR

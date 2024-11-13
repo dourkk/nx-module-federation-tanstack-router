@@ -4,7 +4,7 @@ const config: ModuleFederationConfig = {
   name: 'remote_a',
 
   exposes: {
-    './Module': './src/remote-entry.ts',
+    './Module': './src/app/remote-entry.tsx',
   },
 };
 

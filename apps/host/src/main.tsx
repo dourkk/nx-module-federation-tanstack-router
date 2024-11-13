@@ -9,14 +9,14 @@ init({
   remotes: [
     {
       name: 'remote_a',
-      entry: 'http://localhost:4200/mf-manifest.json'
+      entry: 'http://localhost:4200/mf-manifest.json',
     },
     {
       name: 'remote_b',
-      entry: 'http://localhost:4201/mf-manifest.json'
+      entry: 'http://localhost:4201/mf-manifest.json',
     },
   ],
-})
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
